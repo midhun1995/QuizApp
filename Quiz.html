@@ -1,0 +1,72 @@
+<html>
+<script type = "text/javascript" 
+         src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js">
+      </script>
+<script>
+var questions = [{
+    question: "1)What is the Capital of India?",
+    choices: ["Delhi", "Mumbai", "Chennai", "Kolalta"],
+    correctAnswer: 0
+  },
+  {
+    question: "2)Who was the first Prime Minister of India?",
+    choices: ["Modi Ji", "Jawahar Lal Nehru", "Indira Gandhi", "Rajendra Prasad"],
+    correctAnswer: 1
+  },
+  {
+    question: "3)Who won the 2014 FIFA World cup?",
+    choices: ["France", "Spain", "Germany", "Argentina"],
+    correctAnswer: 2
+  },
+    {
+    question: "4)How many types of premitive datatypes does java have?",
+    choices: ["5", "7", "8", "9"],
+    correctAnswer: 2
+  }               
+];
+var currentQuestion = 0;
+var crctCount=0;
+function setQuestion() {
+  $('#question').html(questions[currentQuestion].question);
+  var options=questions[currentQuestion].choices;
+  var display = '';
+  for (var i = 0; i < options.length; i++) {
+    display += '<div><input type="radio" name="option" value="' + i + '"><label for="' + i + '">' + options[i] + '</label></div><br/>';
+  }
+  $('#form').html(display);
+}
+function check() {
+  if($("input[name=option]:checked").val()==questions[currentQuestion].correctAnswer) {
+    crctCount ++;
+  }
+}
+window.onload=function() {
+	console.log("inside onload!");
+	setQuestion();
+}
+function next() {
+  check();
+  currentQuestion++;
+  if(currentQuestion< questions.length) {
+      setQuestion();
+  }
+  if (currentQuestion == questions.length){
+    
+      $('#result').html("You got "+ crctCount + " of them Correct !!");
+      alert("Quiz Over");
+  }
+}
+</script>
+<body>
+
+<div class="quiz">
+  <h3 id="question"></h3>
+  <br><br>
+  <form id="form">
+
+  </form>
+  <button onClick="next()" id="next">Next</button>
+</div>
+<div id="result"></div>
+<body>
+</html>
