@@ -1,36 +1,44 @@
-
-var questions = [{
-    question: "1)What is the Capital of India?",
-    choices: ["Delhi", "Mumbai", "Chennai", "Kolalta"],
-    correctAnswer: 0
+var questionDetails={
+	
+	question :[
+	{
+		statement:"1)What is the Capital of India ??",
+		options:[
+		{
+			value :["Delhi", "Mumbai", "Chennai", "Kolalta"],
+      selected : true,
+      correctAnswer : 0
+		}
+		]
+		
   },
-
   {
-    question: "2)Who was the first Prime Minister of India?",
-    choices: ["Modi Ji", "Jawahar Lal Nehru", "Indira Gandhi", "Rajendra Prasad"],
-    correctAnswer: 1
-  },
-  {
-    question: "3)Who won the 2014 FIFA World cup?",
-    choices: ["France", "Spain", "Germany", "Argentina"],
-    correctAnswer: 2
-  },
-    {
-    question: "4)How many types of premitive datatypes does java have?",
-    choices: ["5", "7", "8", "9"],
-    correctAnswer: 2
-  }               
-];
-
+		statement:"2)Who won the 2014 FIFA World cup?",
+		options:[
+		{
+			value :["France", "Spain", "Germany", "Argentina"],
+      selected : true,
+      correctAnswer : 2
+		}
+		]
+		
+	}]
+	
+};
+var next = true;
 //ON Load Function
 window.onload=function() {
 	console.log("inside onload!");
-      var fiveMinutes = 60 * 2,
+      var fiveMinutes = 60 * 0.25,
         display = $('#time');
-    startTimer(fiveMinutes, display);
-	setQuestion();
+        
+            startTimer(fiveMinutes, display);
+            setQuestion();
 }
 function startTimer(duration, display) {
+  if(next==true) {
+      
+  }
     var timer = duration, minutes, seconds;
     setInterval(function () {
         minutes = parseInt(timer / 60, 10);
@@ -38,13 +46,14 @@ function startTimer(duration, display) {
 
         minutes = minutes < 10 ? "0" + minutes : minutes;
         seconds = seconds < 10 ? "0" + seconds : seconds;
-		display.text(minutes + ":" + seconds);
+        display.text(minutes + ":" + seconds);
 
        
-	if(minutes==0 && seconds==0 )
+    if(minutes==0 && seconds==0 )
     {
-		result();
-      alert("Quiz is Over");
+        result();
+        alert("Quiz is Over");
+       
     }
 
         if (--timer < 0) {
@@ -52,47 +61,88 @@ function startTimer(duration, display) {
         }
 
     }, 1000);
-	
-}
+   
+  }
+  
 
 var currentQuestion = 0;
 var crctCount=0;
 var isChecked=false;
 
 function setQuestion() {
-  $('#question').html(questions[currentQuestion].question);
-  var options=questions[currentQuestion].choices;
+  $('#question').html(questionDetails.question[currentQuestion].statement);
+  var choices=questionDetails.question[currentQuestion].options[0].value;
+  console.log(questionDetails);
   var display = '';
-  for (var i = 0; i < options.length; i++) {
-    display += '<div><input type="radio" name="option" value="' + i + '"><label for="' + i + '">' + options[i] + '</label></div><br/>';
+  for (var i = 0; i < choices.length; i++) {
+    display += '<div><input type="radio" name="option" value="' + i + '"><label for="' + i + '">' + choices[i] + '</label></div><br/>';
   }
   $('#form').html(display);
-  $(function(){
+   $(function(){
     $("input[type='radio']").change(function(){
         $("input[type='submit']").prop("disabled", false);
-    });
-});
-  
+    });	 
+ });
 }
 
 function check() {
-  if($("input[name=option]:checked").val()==questions[currentQuestion].correctAnswer) {
+  if($("input[name=option]:checked").val() == questionDetails.question[currentQuestion].options[0].correctAnswer) {
     crctCount ++;
+    console.log(crctCount);
   }
 }
 
 function result() {
-	$('#result').html("You got "+ crctCount + " of them Correct !!");
+    $('#result').html("You got "+ crctCount + " of them Correct !!");
+    var marks=crctCount*10;
+    var ctx = document.getElementById('mychart').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ["Total"],
+            datasets: [{
+                label: "Total Marks",
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: [marks],
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            }
+        }
+    });
 }
 function next() {
+	
   check();
   currentQuestion++;
-  if(currentQuestion< questions.length) {
+  if(currentQuestion< questionDetails.question.length) {
       setQuestion();
   }
-  if (currentQuestion == questions.length){
-    
-      $('#result').html("You got "+ crctCount + " of them Correct !!");
+  if (currentQuestion == questionDetails.question.length){
+      next=false;
       alert("Quiz Over");
+      result();
   }
 }
+function submit() {
+  var txt;
+  if (confirm("Press a button!")) {
+    check();
+    result();
+  }
+
+}
+function previous() {
+  currentQuestion--;
+  setQuestion();
+}
+
+
+

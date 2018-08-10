@@ -5,6 +5,8 @@
 <script type = "text/javascript" 
          src = "Quiz.js">
 </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 <body>
 
 <div class="quiz">
@@ -14,10 +16,11 @@
   <form id="form">
 
   </form>
-
-
-<input type="submit" onClick="next()" disabled="disabled" id="next" value="next"/>
+<input type="submit" onClick="next()" disabled="disabled" id="next" value="Next"/>
+<input type="submit" onClick="previous()" disabled="disabled" id="previous" value="Previous"/>
+<input type="submit" onClick="submit()" disabled="disabled" id="submit" value="Submit"/>
 </div>
 <div id="result"></div>
+<canvas id="mychart"></canvas>
 <body>
 </html>
